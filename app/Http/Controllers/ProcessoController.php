@@ -2,18 +2,50 @@
 
 namespace App\Http\Controllers;
 
+use App\Processo;
 use Illuminate\Http\Request;
+
+use App\PerPage;
+
+use Response;
+use Auth;
+
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
+
+use Illuminate\Validation\Rule;
 
 class ProcessoController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
+
+
     public function index()
     {
-        //
+        $processos = new Processo;
+
+        if (request()->has('processo')){
+            $processos = $processos->where('processo', 'like', '%' . request('processo') . '%');
+        }
+        $atual = Auth::user()->id;
+       // dd($atual);
+
+        $processos = $processos->where('atual','=', $atual);
+        $processos = $processos->orderby('created_at', 'desc')->paginate(10);
+
+
+//dd($processos);
+        return view('processos.index', compact('processos'));
     }
 
     /**
@@ -23,7 +55,7 @@ class ProcessoController extends Controller
      */
     public function create()
     {
-        //
+        return view('processos.create');
     }
 
     /**
@@ -34,7 +66,13 @@ class ProcessoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+//dd($request);
+        Processo::create($request->all());
+
+        Session::flash('create_processo', 'processo cadastrado com sucesso!');
+
+        return redirect(route('processos.index'));
     }
 
     /**
@@ -45,7 +83,9 @@ class ProcessoController extends Controller
      */
     public function show($id)
     {
-        //
+        $processo = Processo::findOrFail($id);
+
+           return view('processos.show', compact('processo'));
     }
 
     /**
@@ -56,7 +96,9 @@ class ProcessoController extends Controller
      */
     public function edit($id)
     {
-        //
+        $processo = Processo::findOrFail($id);
+
+        return view('processos.edit', compact('processo'));
     }
 
     /**
@@ -68,7 +110,13 @@ class ProcessoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $processo = Processo::findOrFail($id);
+
+        $processo->update($request->all());
+
+        Session::flash('edited_processo', 'processo alterado com sucesso!');
+
+        return redirect(route('processos.index'));
     }
 
     /**
@@ -79,6 +127,10 @@ class ProcessoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Processo::findOrFail($id)->delete();
+
+        Session::flash('deleted_processo', 'processo excluído com sucesso!');
+
+        return redirect(route('processos.index'));
     }
 }

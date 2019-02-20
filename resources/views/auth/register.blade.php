@@ -53,6 +53,7 @@
                             </div>
                         </div>
 
+
                         <div class="form-group row">
                             <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
 
@@ -60,6 +61,20 @@
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
                             </div>
                         </div>
+
+                          <!-- Selecionar setor -->
+                          <div class="form-group row  {{ $errors->has('setor_id') ? ' has-error' : '' }}">
+                            {{ Form::label('setor_id', 'Setor:', ['class' => 'col-md-4 col-form-label text-md-right']) }}
+                                <div class="col-md-6">
+                                {!! Form::select('setor_id', $setors, null, ['placeholder' => 'Escolha um setor...', 'class' => 'form-control']) !!}
+                                @if ($errors->has('setor_id'))
+                                    <span class="help-block">
+                                        <strong>{{$errors->first('setor_id')}}</strong>
+                                    </span>
+                                @endif
+                                </div>
+                        </div>
+
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">

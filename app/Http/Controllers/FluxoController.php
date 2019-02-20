@@ -2,10 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Fluxo;
+use App\Processo;
+use App\Setor;
+use App\User;
+
 use Illuminate\Http\Request;
+
+use App\PerPage;
+
+use Response;
+use Auth;
+
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
+
+use Illuminate\Validation\Rule;
 
 class FluxoController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,9 +33,33 @@ class FluxoController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $processos = new Processo;
 
+        if (request()->has('processo')){
+            $processos = $processos->where('processo', 'like', '%' . request('processo') . '%');
+        }
+        $atual = Auth::user()->id;
+       // dd($atual);
+
+        $processos = $processos->where('user_id','=', $atual)->where('atual','<>', $atual);
+        $processos = $processos->orderby('created_at', 'desc')->paginate(10);
+
+        return view('fluxo.index', compact('processos'));
+    }
+    public function passagem($id)
+    {
+
+        $fluxos = new Fluxo;
+
+        if (request()->has('processo')){
+            $processos = $processos->where('processo', 'like', '%' . request('processo') . '%');
+        }
+
+        $fluxos = $fluxos->where('processo_id','=', $id);
+        $fluxos = $fluxos->orderby('created_at', 'desc')->paginate(10);
+
+        return view('fluxo.detalhar', compact('fluxos'));
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -23,7 +67,16 @@ class FluxoController extends Controller
      */
     public function create()
     {
-        //
+
+        $setors = Setor::orderBy('setor')->pluck('setor', 'id');
+        $users = User::orderBy('name')->pluck('name', 'id');
+        $id = Session::get('key');
+        Session::forget('key');
+        $processos = Processo::find($id);
+     //   dd($id);
+
+
+        return view('fluxo.create', compact('setors','users','processos'));
     }
 
     /**
@@ -34,7 +87,17 @@ class FluxoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $processo = Processo::findOrFail($request->processo_id);
+        $user = User::where('setor_id', $request->setordestino)->first();
+        $processo->atual = $user->id;
+      //  dd($user->id);
+        $processo->save();
+
+        Fluxo::create($request->all() + ['setor_id' => $request->setordestino]);
+
+        Session::flash('create_fluxo', 'fluxo cadastrado com sucesso!');
+
+        return redirect(route('processos.index'));
     }
 
     /**
@@ -45,7 +108,8 @@ class FluxoController extends Controller
      */
     public function show($id)
     {
-        //
+        session()->put('key', $id);
+        return redirect(route('fluxo.create'));
     }
 
     /**
