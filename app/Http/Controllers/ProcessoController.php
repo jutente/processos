@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Storage;
+
 use App\Processo;
 use Illuminate\Http\Request;
 
@@ -42,10 +44,12 @@ class ProcessoController extends Controller
 
         $processos = $processos->where('atual','=', $atual);
         $processos = $processos->orderby('created_at', 'desc')->paginate(10);
+        $url1 = Storage::disk('local')->get('teste/teste.pdf');
+        $url = Image::make($url1)->response();
 
-
+      dd($url);
 //dd($processos);
-        return view('processos.index', compact('processos'));
+        return view('processos.index', compact('processos','url'));
     }
 
     /**
@@ -68,6 +72,9 @@ class ProcessoController extends Controller
     {
 
 //dd($request);
+
+        $upload = $request->file('image')->store('public/teste');
+
         Processo::create($request->all());
 
         Session::flash('create_processo', 'processo cadastrado com sucesso!');

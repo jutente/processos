@@ -7,7 +7,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading"><a href="{{route('processos.index')}}">processo</a> - Novo Registro</div>
                 <br>
-                {!! Form::open(['method' => 'post', 'url' => route('processos.store'), 'class' => 'form-horizontal']) !!}
+                {!! Form::open(['method' => 'post', 'url' => route('processos.store'), 'class' => 'form-horizontal','enctype'=>'multipart/form-data']) !!}
 
                 {{ Form::hidden('user_id', Auth::user()->id)}}
                 {{ Form::hidden('atual', Auth::user()->id)}}
@@ -30,6 +30,18 @@
                     {{ Form::label('descricao', 'Descricao:', ['class' => 'col-md-4 control-label']) }}
                     <div class="col-md-6">
                         {{ Form::textarea('descricao', '', ['class' => 'form-control text-uppercase']) }}
+                        @if ($errors->has('descricao'))
+                            <span class="help-block">
+                                <strong>{{$errors->first('descricao')}}</strong>
+                            </span>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="form-group {{ $errors->has('descricao') ? ' has-error' : '' }}">
+                    {{ Form::label('image', 'Arquivo:', ['class' => 'col-md-4 control-label']) }}
+                    <div class="col-md-6">
+                        {{ Form::file('image',['class' => 'form-control']) }}
                         @if ($errors->has('descricao'))
                             <span class="help-block">
                                 <strong>{{$errors->first('descricao')}}</strong>

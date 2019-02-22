@@ -41,8 +41,9 @@
 	                <table class="table table-striped">
 	                    <thead>
 	                    <tr>
-                            <th width="20%">Numero do processo</th>
+                            <th width="10%">Numero do processo</th>
                             <th width="50%">Descriçao</th>
+                            <th width="10">Arquivo</th>
                             <th>Data</th>
 	                    </tr>
 	                    </thead>
@@ -53,6 +54,8 @@
 
 								<td>{{$p->numprocesso}}</td>
                                 <td>{{$p->descricao}}</td>
+
+                                <td> <a href="{{$url}}" >arquivo</a></td>
                                 <td>{{\Carbon\Carbon::parse($p->created_at)->format('d/m/Y')}}</td>
 
                                 <td style="text-align: right">
