@@ -43,7 +43,7 @@
 	                    <tr>
                             <th width="10%">Numero do processo</th>
                             <th width="50%">Descriçao</th>
-                            <th width="10">Arquivo</th>
+                            <th width="20%">Arquivo</th>
                             <th>Data</th>
 	                    </tr>
 	                    </thead>
@@ -55,14 +55,17 @@
 								<td>{{$p->numprocesso}}</td>
                                 <td>{{$p->descricao}}</td>
 
-                                <td> <a href="{{$url}}" >arquivo</a></td>
+                                @if (isset($url))
+                                    <td> <a href="{{$url}}" >arquivo</a></td>
+                                @else
+                                    <td>sem arquivo</td>
+                                @endif
+
                                 <td>{{\Carbon\Carbon::parse($p->created_at)->format('d/m/Y')}}</td>
 
                                 <td style="text-align: right">
-
                                     <a href="{{route('fluxo.show',$p->id)}}" class="btn btn-warning btn-xs" role="button">Tramitar</a>
                                     <a href="{{route('processos.edit',$p->id)}}" class="btn btn-primary btn-xs" role="button">Alterar</a>
-
                                     <a href="{{route('processos.show',$p->id)}}" class="btn btn-danger btn-xs" role="button">Excluir</a>
                                 </td>
 

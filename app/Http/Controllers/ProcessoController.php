@@ -30,6 +30,37 @@ class ProcessoController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+    private function upload(Request $request)
+    {
+        if ($request->hasfile('image') && $request->image->isvalid())
+        {
+            $nome = $request->image->getClientOriginalName();
+           // $extensao = $request->image->extension();
+            $arquivo = $nome;
+            //.$extensao;
+            $diretorio ='public/a'.Auth::user()->id;
+
+            $upload = $request->image->storeAs($diretorio, $arquivo);
+           // dd($upload);
+
+                if(!$upload)
+                {
+                    return redirect()->back()->with('Erro upload')->withInput();
+                }
+        }
+
+    }
+
+    private function download()
+    {
+
+        $caminho = 'a'.Auth::user()->id.'/'.'cismep servico.txt';
+        $url = Storage::url($caminho);
+
+       return $url;
+    }
+
+
 
 
     public function index()
@@ -39,16 +70,15 @@ class ProcessoController extends Controller
         if (request()->has('processo')){
             $processos = $processos->where('processo', 'like', '%' . request('processo') . '%');
         }
+
         $atual = Auth::user()->id;
-       // dd($atual);
+
+        $url = $this->download();
 
         $processos = $processos->where('atual','=', $atual);
         $processos = $processos->orderby('created_at', 'desc')->paginate(10);
-        $url1 = Storage::disk('local')->get('teste/teste.pdf');
-        $url = Image::make($url1)->response();
 
-      dd($url);
-//dd($processos);
+
         return view('processos.index', compact('processos','url'));
     }
 
@@ -71,10 +101,7 @@ class ProcessoController extends Controller
     public function store(Request $request)
     {
 
-//dd($request);
-
-        $upload = $request->file('image')->store('public/teste');
-
+        $uploads = $this->upload($request);
         Processo::create($request->all());
 
         Session::flash('create_processo', 'processo cadastrado com sucesso!');
