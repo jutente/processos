@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Storage;
 
 use App\Processo;
+use App\Fluxo;
+
 use Illuminate\Http\Request;
 
 use App\PerPage;
@@ -66,6 +68,10 @@ class ProcessoController extends Controller
     public function index()
     {
         $processos = new Processo;
+        $fluxo = Fluxo::distinct()->select('processo_id')->get();
+
+        // $existe = $fluxo->contains('processo_id','25');
+        // dd($existe);
 
         if (request()->has('processo')){
             $processos = $processos->where('processo', 'like', '%' . request('processo') . '%');
@@ -79,7 +85,7 @@ class ProcessoController extends Controller
         $processos = $processos->orderby('created_at', 'desc')->paginate(10);
 
 
-        return view('processos.index', compact('processos','url'));
+        return view('processos.index', compact('processos','url','fluxo'));
     }
 
     /**

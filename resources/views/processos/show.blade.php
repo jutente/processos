@@ -5,13 +5,13 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading"><a href="{{route('processo.index')}}">processos</a> - Excluir</div>
+                <div class="panel-heading"><a href="{{route('processos.index')}}">processos</a> - Excluir</div>
                 <br>
                 <ul class="list-group">
                     <li class="list-group-item">processo: {{$processo->descricao}}</li>
                 </ul>
                 <br><br>
-                {!! Form::open(['method' => 'POST', 'url' => route('processo.destroy', $processo->id), 'class' => 'form-horizontal']) !!}
+                {!! Form::open(['method' => 'POST', 'url' => route('processos.destroy', $processo->id), 'class' => 'form-horizontal']) !!}
 
                 {{ Form::hidden('_method', 'DELETE') }}
 
@@ -24,7 +24,7 @@
                 {!! Form::close() !!}
             </div>
 
-            <a href="{{route('processo.index')}}" class="btn btn-default btn-sm" role="button"><span class="glyphicon glyphicon-arrow-left"></span>Voltar</a>
+            <a href="{{route('processos.index')}}" class="btn btn-default btn-sm" role="button"><span class="glyphicon glyphicon-arrow-left"></span>Voltar</a>
         </div>
     </div>
 </div>

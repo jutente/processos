@@ -20,6 +20,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/fluxo/detalhar/{id}', 'FluxoController@passagem')->name('fluxo.passagem');
 Route::get('/processos/upload/{id}', 'ProcessoController@upload')->name('processo.upload');
+Route::get('/fluxo/respondido', 'FluxoController@respondido')->name('fluxo.respondido');
 
 Route::resource('/setor', 'SetorController');
 Route::resource('/processos', 'ProcessoController');

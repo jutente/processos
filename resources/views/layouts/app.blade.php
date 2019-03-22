@@ -4,14 +4,16 @@
     <meta charset="utf-8">
 
     <meta name="robots" content="noindex, nofollow">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/estilo.css') }}">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+
+    <script src="{{'js/jquery-3.3.1.min.js'}}"></script>
+    <script src="{{'js/popper.min.js'}}"></script>
+    <script src="{{'js/bootstrap.min.js'}}"></script>
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
     @yield('script-header')
     <title>{{ config('app.name') }}</title>
 
@@ -21,7 +23,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-default navbar-static-top" >
+        <nav class="navbar navbar-expand-lg bg-dark navbar-dark " >
             <div class="container">
                 <div class="navbar-header">
 
@@ -41,13 +43,14 @@
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
-                    <ul class="nav navbar-nav">
+                    <ul class="navbar-nav mr-auto">
                         @if (Auth::check())
 
-                            <li><a href="{{ route('setor.index') }}">Setor</a></li>
-                            <li><a href="{{ route('processos.index') }}">Processo</a></li>
-                            <li><a href="{{ route('fluxo.index') }}">Fluxo</a></li>
-                            <li><a href="#">Relatorio</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ route('setor.index') }}">Setor</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ route('processos.index') }}">Processo</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ route('fluxo.index') }}">Processos pendentes</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ route('fluxo.respondido') }}">Processos respondidos</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#">Relatorio</a></li>
                         @endif
                     </ul>
 
@@ -55,19 +58,19 @@
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
                         @if (Auth::guest())
-                            <li><a href="{{ route('login') }}">Login</a></li>
+                            <li class="nav-item dropdown"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
                          @else
-                            <li><a href="{{ route('register') }}">Registrar</a></li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <li class="nav-item dropdown"><a class="nav-link" href="{{ route('register') }}">Registrar</a></li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     {{ Auth::user()->name }} <span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                            Logout
-                                        </a>
+
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item"href="{{ route('logout') }}"  onclick="event.preventDefault();
+                                                 document.getElementById('logout-form').submit();">
+                                        Logout</a>
+
+                                    </div>
 
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                             {{ csrf_field() }}
@@ -85,6 +88,10 @@
     </div>
 
     <!-- Scripts -->
-    @yield('script-footer')
+
+@yield('script-footer')
+
+
+
 </body>
 </html>

@@ -46,6 +46,25 @@ class FluxoController extends Controller
 
         return view('fluxo.index', compact('processos'));
     }
+
+    public function respondido()
+    {
+        $fluxos = new Fluxo;
+        $processos = new Processo;
+
+        if (request()->has('processo')){
+            $processos = $processos->where('processo', 'like', '%' . request('processo') . '%');
+        }
+
+        $processos = $processos->where('atual','<>',Auth::user()->id);
+        $processos = $processos->wherenotin('id', function($fluxos)
+                                            {   $id = Auth::user()->id;
+                                                $fluxos->select('processo_id')->from('fluxos')->where('user_id','=',$id);
+                                            })->paginate(10);
+
+        return view('fluxo.respondido', compact('processos'));
+    }
+
     public function passagem($id)
     {
 
@@ -91,7 +110,7 @@ class FluxoController extends Controller
         $user = User::where('setor_id', $request->setordestino)->first();
         $processo->atual = $user->id;
       //  dd($user->id);
-        $processo->save();
+        $processo->update();
 
         Fluxo::create($request->all() + ['setor_id' => $request->setordestino]);
 

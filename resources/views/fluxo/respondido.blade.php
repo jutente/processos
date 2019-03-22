@@ -41,9 +41,8 @@
 	                <table class="table table-striped">
 	                    <thead>
 	                    <tr>
-                            <th width="10%">Numero do processo</th>
+                            <th width="20%">Numero do processo</th>
                             <th width="50%">Descriçao</th>
-                            <th width="20%">Arquivo</th>
                             <th>Data</th>
 	                    </tr>
 	                    </thead>
@@ -54,24 +53,13 @@
 
 								<td>{{$p->numprocesso}}</td>
                                 <td>{{$p->descricao}}</td>
-
-                                @if (isset($url))
-                                    <td> <a href="{{$url}}" >arquivo</a></td>
-                                @else
-                                    <td>sem arquivo</td>
-                                @endif
-
-                                <td>{{\Carbon\Carbon::parse($p->created_at)->format('d/m/Y H:i:s')}}</td>
+                                <td>{{\Carbon\Carbon::parse($p->created_at)->format('d/m/Y')}}</td>
 
                                 <td style="text-align: right">
-                                    <a href="{{route('fluxo.show',$p->id)}}" class="btn btn-warning btn-sm" role="button">Tramitar</a>
+                                    {{-- <a href="#" class="btn btn-warning btn-xs" role="button">Tramitar</a> --}}
+                                    <a href="{{route('fluxo.passagem',$p->id)}}" class="btn btn-primary btn-xs" role="button">Detalhar</a>
 
-                                    @if ( !$fluxo->contains('processo_id',$p->id))
-                                        <a href="{{route('processos.edit',$p->id)}}" class="btn btn-primary btn-sm" role="button">Alterar</a>
-                                        <a href="{{route('processos.show',$p->id)}}" class="btn btn-danger btn-sm" role="button">Excluir</a>
-                                    @else
-                                        <a href="{{route('fluxo.passagem',$p->id)}}" class="btn btn-primary btn-sm" role="button">Detalhar</a>
-                                    @endif
+                                    {{-- <a href="{{route('processos.show',$p->id)}}" class="btn btn-danger btn-xs" role="button">Excluir</a> --}}
                                 </td>
 
 							</tr>
