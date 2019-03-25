@@ -28,7 +28,12 @@
                 <div class="navbar-header">
 
                     <!-- Collapsed Hamburger -->
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
+                   {{--  <button class="navbar-toggler toggler-example" type="button" data-toggle="collapse" data-target="#app-navbar-collapse"
+                        aria-controls="app-navbar-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="dark-blue-text">
+                        <i class="fas fa-bars fa-1x"></i></span></button> --}}
+
+                    <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#app-navbar-collapse"
+                            aria-controls="app-navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="sr-only">Toggle Navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
