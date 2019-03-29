@@ -18,59 +18,63 @@
 	            <a href="#" class="close" data-dismiss="alert" aria-label="Fechar">&times;</a>
 	            <strong>Info!</strong> {{ session('create_processos') }}
 	        </div>
-	        @endif
-	        <div class="panel panel-default">
-	            <div class="panel-heading">
+            @endif
+            <br>
+	        <div class="card">
+	            <div class="card-header">
 					<div class="row">
 					  <div class="col-sm-4">
 					  	Meus processos.
 					  </div>
-					  <div class="col-sm-12 text-right">
+					  <div class="col-sm-8 text-right">
 					  	<div class="btn-group btn-group-sm">
 							<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#modalFilter">Filtro</a>
-
 							<a href="{{route('processos.create')}}" class="btn btn-primary">Novo Registro</a>
 
 					  	</div>
 					  </div>
 					</div>
 				</div>
-				<br>
+                <br>
 
-	            <div class="table-responsive">
-	                <table class="table table-striped">
-	                    <thead>
-	                    <tr>
-                            <th width="20%">Numero do processo</th>
-                            <th width="50%">Descriçao</th>
-                            <th>Data</th>
-	                    </tr>
-	                    </thead>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th width="20%">Numero do processo</th>
+                                <th width="50%">Descriçao</th>
+                                <th>Data</th>
+                            </tr>
+                            </thead>
 
-	                    <tbody>
-							@foreach($processos as $p)
-							<tr>
+                            <tbody>
+                                @foreach($processos as $p)
+                                <tr>
 
-								<td>{{$p->numprocesso}}</td>
-                                <td>{{$p->descricao}}</td>
-                                <td>{{\Carbon\Carbon::parse($p->created_at)->format('d/m/Y')}}</td>
+                                    <td>{{$p->numprocesso}}</td>
+                                    <td>{{$p->descricao}}</td>
+                                    <td>{{\Carbon\Carbon::parse($p->created_at)->format('d/m/Y')}}</td>
 
-                                <td style="text-align: right">
-                                    {{-- <a href="#" class="btn btn-warning btn-xs" role="button">Tramitar</a> --}}
-                                    <a href="{{route('fluxo.passagem',$p->id)}}" class="btn btn-primary btn-xs" role="button">Detalhar</a>
+                                    <td style="text-align: right">
+                                        {{-- <a href="#" class="btn btn-warning btn-xs" role="button">Tramitar</a> --}}
+                                        <a href="{{route('fluxo.passagem',$p->id)}}" class="btn btn-primary btn-sm" role="button">Detalhar</a>
 
-                                    {{-- <a href="{{route('processos.show',$p->id)}}" class="btn btn-danger btn-xs" role="button">Excluir</a> --}}
-                                </td>
+                                        {{-- <a href="{{route('processos.show',$p->id)}}" class="btn btn-danger btn-xs" role="button">Excluir</a> --}}
+                                    </td>
 
-							</tr>
-							@endforeach
-	                    </tbody>
-	                </table>
-				</div>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
-				<div class="row" align="center">
-					{{$processos->links()}}
-				</div>
+                <div class="card-footer">
+                    <div class="row text-center pagination justify-content-center">
+                        {{$processos->links()}}
+                    </div>
+                </div>
 	        </div>
     	</div>
     </div>

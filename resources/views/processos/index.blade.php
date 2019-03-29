@@ -20,6 +20,7 @@
                 </div>
 	        @endif
 
+            <br>
             <div class="card">
 
 	            <div class="card-header">
@@ -85,9 +86,11 @@
                     </div>
                 </div>
 
-				<div class="row" align="center">
-					{{$processos->links()}}
-				</div>
+                <div class="card-footer">
+                    <div class="row text-center pagination justify-content-center">
+                        {{$processos->links()}}
+                    </div>
+                </div>
 	        </div>
     	</div>
     </div>
